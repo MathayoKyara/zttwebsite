@@ -41,11 +41,22 @@ jobs:
       - name: Build Flutter Web
         run: flutter build web --base-href "/zttwebsite/" --release
 
+      - name: Verify build output
+        run: |
+          ls -la build/web/
+          echo "Build output verified"
+
       - name: Add .nojekyll file
         run: touch build/web/.nojekyll
 
       - name: Copy 404.html for routing
-        run: cp web/404.html build/web/404.html
+        run: |
+          if [ -f web/404.html ]; then
+            cp web/404.html build/web/404.html
+            echo "404.html copied successfully"
+          else
+            echo "Warning: web/404.html not found"
+          fi
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
